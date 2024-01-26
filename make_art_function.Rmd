@@ -4,13 +4,6 @@ output: html_document
 date: "2024-01-26"
 ---
 
-## make_art function
-
-This function makes animated art.
-To make art, enter a numerical argument. 
-It may take up to 30 sec until the image appears.
-
-
 ```{r}
 # load necessary packages
 library(ggplot2)
