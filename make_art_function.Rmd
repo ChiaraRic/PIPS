@@ -1,0 +1,45 @@
+---
+title: "make_art_function"
+output: html_document
+date: "2024-01-26"
+author: Chiara Richardt
+---
+
+## make_art function
+
+This function makes animated art.
+To make art, enter a numerical argument. 
+It may take up to 30 sec until the image appears.
+
+
+```{r}
+# load necessary packages
+library(ggplot2)
+library(gganimate)
+library(magick)
+library(gifski)
+
+# create animated art, argument must be numerical 
+make_art <- function(seed){
+  set.seed(seed)
+  test_data <- data.frame(id = seq(1:50), norm_data = rnorm(n = 50))
+  orange <- image_read("https://upload.wikimedia.org/wikipedia/commons/c/c4/Orange-Fruit-Pieces.jpg")
+  image <- image_fill(orange, 'none')
+  raster <- as.raster(image)
+  
+  art_plot <- ggplot(data = test_data, mapping = aes(x = id, y = norm_data, xend = 48, yend = norm_data)) + 
+    geom_point(color = "#1C7C54") +
+    theme_void() +
+    theme(panel.background = element_rect(fill = "#FF7477")) +
+    geom_line(color = "#e9d9eb", lwd = 2.5) + 
+    geom_curve(color = "white") +
+    annotate("text", x=8, y=1, label= "hello", colour = "black", size = 8) +
+    annotate("text", x=12, y=0.7, label= "world", colour = "#91F9E5", size = 8) +
+    annotate("text", x=40, y=0.05, label= "This is art", colour = "#797596", size = 10) +
+    annotation_raster(raster, 25, 35, 0, 1) +
+   transition_reveal(along = id)
+  
+  
+  animate(art_plot, renderer = gifski_renderer())
+}
+```
